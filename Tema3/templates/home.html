@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+    <h2>Описание проекта</h2>
+    <p>Это система для учета сотрудников и их рабочих мест.</p>
+    <h3>Наши сотрудники:</h3>
+    <div class="card-container">
+        {% for employee in employees %}
+            <a href="{% url 'employees:employee_detail' pk=employee.pk %}" class="card">
+                <h4>{{ employee.user.first_name }} {{ employee.user.last_name }}</h4>
+                <div class="skills">
+                    {% for skill in employee.skills.all %}
+                        <span class="skill">{{ skill.name }}</span>
+                    {% endfor %}
+                </div>
+            </a>
+        {% empty %}
+            <p>Сотрудников пока нет.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
