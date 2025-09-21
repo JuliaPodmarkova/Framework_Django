@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Карточка сотрудника: {{ employee }}{% endblock %}
+
+{% block content %}
+    <h2>{{ employee.user.first_name }} {{ employee.user.last_name }}</h2>
+    <p><strong>Пол:</strong> {{ employee.get_gender_display }}</p>
+
+    <h3>Навыки:</h3>
+    <ul>
+        {% for emp_skill in employee.employeeskill_set.all %}
+            <li>{{ emp_skill.skill.name }} - <strong>Уровень: {{ emp_skill.level }}/10</strong></li>
+        {% empty %}
+            <li>Навыки не указаны.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Описание:</h3>
+    <div>{{ employee.description|safe }}</div>
+
+    <h3>Галерея:</h3>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        {% for img in employee.images.all %}
+            <img src="{{ img.image.url }}" alt="Фото сотрудника" style="max-width: 200px; height: auto; border-radius: 5px;">
+        {% empty %}
+            <p>В галерее пока нет фотографий.</p>
+        {% endfor %}
+    </div>
+
+{% endblock %}
