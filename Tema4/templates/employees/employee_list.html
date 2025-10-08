@@ -6,15 +6,15 @@
 
     <div class="row">
         {% for employee in page_obj %}
-        <!-- Эта разметка уже правильная! 4 карточки на больших экранах (12/3), 3 на средних (12/4) -->
+       
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card h-100">
                 <a href="{% url 'employees:employee_detail' employee.pk %}">
                     {% if employee.get_first_image %}
-                        <!-- <<< ИЗМЕНЕНИЕ ЗДЕСЬ: добавлен класс card-img-top-fixed >>> -->
+
                         <img class="card-img-top card-img-top-fixed" src="{{ employee.get_first_image.image.url }}" alt="{{ employee.user.get_full_name }}">
                     {% else %}
-                        <!-- <<< ИЗМЕНЕНИЕ ЗДЕСЬ: добавлен класс card-img-top-fixed >>> -->
+
                         <img class="card-img-top card-img-top-fixed" src="https://via.placeholder.com/400x300.png?text=No+Photo" alt="Нет фото">
                     {% endif %}
                 </a>
