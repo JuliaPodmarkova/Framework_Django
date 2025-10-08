@@ -1,5 +1,3 @@
-# employees/templatetags/ru_pluralize.py
-
 from django import template
 
 register = template.Library()
