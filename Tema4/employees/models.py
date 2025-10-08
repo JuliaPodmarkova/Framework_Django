@@ -1,5 +1,4 @@
 import os
-
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -18,7 +17,6 @@ class Skill(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class EmployeeProfile(models.Model):
     user = models.OneToOneField(
@@ -85,20 +83,13 @@ class EmployeeProfile(models.Model):
         return self.images.order_by('order_number').first()
 
     def clean(self):
-        """
-        Финальная версия валидатора с правильными slug'ами.
-        Не позволяет сажать разработчиков и тестировщиков за соседние столы.
-        """
         super().clean()
 
         if not self.position or not self.workplace or not self.workplace.table_number:
             return
 
-        # VVV ИЗМЕНЕНИЯ ЗДЕСЬ VVV
-        # Убедись, что эти slug'и ТОЧНО совпадают с теми, что в админке
         DEVELOPER_SLUGS = ["backend-developer", "frontend-developer"]
         TESTER_SLUGS = ["qa-engineer", "tester"]  # Добавили "tester"
-        # ^^^ ИЗМЕНЕНИЯ ЗДЕСЬ ^^^
 
         is_developer = self.position.slug in DEVELOPER_SLUGS
         is_tester = self.position.slug in TESTER_SLUGS
@@ -147,7 +138,6 @@ class EmployeeSkill(models.Model):
     def __str__(self):
         return f"{self.employee} - {self.skill} (Уровень: {self.level})"
 
-
 class EmployeeImage(models.Model):
 
     employee = models.ForeignKey(
@@ -168,7 +158,6 @@ class EmployeeImage(models.Model):
 
     def __str__(self):
         return f"Изображение для {self.employee} (№{self.order_number})"
-
 
 @receiver(pre_delete, sender=EmployeeImage)
 def delete_employee_image_file(sender, instance, **kwargs):
