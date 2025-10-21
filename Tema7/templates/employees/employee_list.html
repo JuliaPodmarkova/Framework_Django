@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Сотрудники</h1>
+
+<p>
+    <a href="{% url 'employees:employee_add' %}?next={{ request.get_full_path }}">
+        ➕ Добавить сотрудника
+    </a>
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Должность</th>
+            <th>Email</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>
+                <a href="{% url 'employees:employee_detail' employee.pk %}">
+                    {{ employee.last_name }} {{ employee.first_name }}
+                </a>
+            </td>
+            <td>{{ employee.position }}</td>
+            <td>{{ employee.user.email }}</td>
+            <td>
+                <a href="{% url 'employees:employee_update' employee.pk %}">✏️</a>
+                <a href="{% url 'employees:employee_delete' employee.pk %}">🗑️</a>
+                {% if request.user.is_staff or request.user.profile.is_watcher %}
+                    <a href="{% url 'employees:employee_move_workplace' employee.pk %}">⇆ Переместить</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Пока нет сотрудников</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if is_paginated %}
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+    {% endif %}
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}
