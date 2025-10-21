@@ -21,7 +21,6 @@ class IsWatcherOrAdminToChangeWorkplace(BasePermission):
             return True
         if request.user.is_staff:
             return True
-        # Например: watcher должен иметь свойство is_watcher в профиле
         if hasattr(request.user, "profile") and getattr(
             request.user.profile, "is_watcher", False
         ):

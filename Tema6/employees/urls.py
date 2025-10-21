@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import (
     EmployeeListView, EmployeeCreateView, EmployeeDetailView, EmployeeUpdateView,
-    EmployeeDeleteView, SkillCreateView, EmployeeMoveWorkplaceView # добавлено перемещение
+    EmployeeDeleteView, SkillCreateView, EmployeeMoveWorkplaceView
 )
 
-app_name = 'employees'   # <--- это важно для {% url ... %}
+app_name = 'employees'
 
 urlpatterns = [
     path('', EmployeeListView.as_view(), name='employee_list'),

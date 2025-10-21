@@ -132,10 +132,8 @@ class EmployeeProfile(models.Model):
 
     @property
     def full_name(self):
-        # Сначала берем из EmployeeProfile, если заполнено, иначе fallback к user
         last_name = self.last_name or self.user.last_name
         first_name = self.first_name or self.user.first_name
-        # EmployeeProfile patronymic, иначе у user, если вдруг расширен
         patronymic = self.patronymic or getattr(self.user, 'patronymic', '')
         parts = [last_name, first_name, patronymic]
         return ' '.join([p for p in parts if p])
