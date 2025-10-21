@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Наша команда</h1>
+            <p class="col-md-8 fs-4">Познакомьтесь с лучшими специалистами и новыми талантами в нашей компании.</p>
+        </div>
+    </div>
+
+    <!-- БЛОК №1: Топ сотрудников -->
+
+    <h2 class="mb-4">🏆 Топ 5 сотрудников по навыкам</h2>
+    <div class="row">
+        {% for employee in top_employees %}
+        <div class="col-lg col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if forloop.first and employee.total_skill_level > 0 %}
+                    <div style="position: absolute; top: 10px; right: -10px; background-color: #ffc107; color: black; padding: 5px 15px; transform: rotate(20deg); font-weight: bold; z-index: 10;">⭐ Топ-1</div>
+                {% endif %}
+
+                <a href="{% url 'employees:employee_detail' employee.pk %}">
+                    {% if employee.get_first_image %}
+                        <img class="card-img-top card-img-top-fixed" src="{{ employee.get_first_image.image.url }}" alt="{{ employee.full_name }}">
+                    {% else %}
+                        <img class="card-img-top card-img-top-fixed" src="https://via.placeholder.com/400x300.png?text=No+Photo" alt="Нет фото">
+                    {% endif %}
+                </a>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">
+                        <a href="{% url 'employees:employee_detail' employee.pk %}">{{ employee.full_name|default:employee.user.username }}</a>
+                    </h5>
+                    <p class="card-text text-muted">{{ employee.position.name|default:"Без должности" }}</p>
+                    <div class="mt-auto pt-2">
+                        <p class="mb-1"><strong>Общий рейтинг: {{ employee.total_skill_level|default:0 }}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <p class="alert alert-info">Нет данных о сотрудниках с навыками для отображения рейтинга.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- БЛОК №2: Недавно присоединились -->
+
+    <h2 class="mb-4 mt-5">✨ Недавно присоединились</h2>
+    <div class="row">
+        {% for employee in recent_employees %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'employees:employee_detail' employee.pk %}">
+                    {% if employee.get_first_image %}
+                        <img class="card-img-top card-img-top-fixed" src="{{ employee.get_first_image.image.url }}" alt="{{ employee.full_name }}">
+                    {% else %}
+                        <img class="card-img-top card-img-top-fixed" src="https://via.placeholder.com/400x300.png?text=No+Photo" alt="Нет фото">
+                    {% endif %}
+                </a>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">
+                        <a href="{% url 'employees:employee_detail' employee.pk %}">{{ employee.full_name|default:employee.user.username }}</a>
+                    </h5>
+                    <p class="card-text">{{ employee.position.name|default:"Без должности" }}</p>
+
+                    <div class="mt-auto pt-2">
+                        <small class="text-muted">
+                            В компании: {{ employee.get_work_experience_days }} д{{ employee.get_work_experience_days|pluralize:"ень,ня,ней" }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <p>Пока нет информации о новых сотрудниках.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
