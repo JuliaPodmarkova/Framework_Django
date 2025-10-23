@@ -28,12 +28,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_filters",
+    'django_ckeditor_5',
     "company.apps.CompanyConfig",
     "employees.apps.EmployeesConfig",
-    "ckeditor",
     "rest_framework",
     "rest_framework.authtoken",
-    "rest_framework",
     "drf_yasg",
     "corsheaders",
 ]
@@ -70,13 +69,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "hr_system.wsgi.application"
-
+'''
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
+'''
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "FrameworkDjango",
+        "USER": "postgres",
+        "PASSWORD": "",
+        "HOST": os.environ.get("DATABASE_HOST", "127.0.0.1"),
+        "PORT": os.environ.get("DATABASE_PORT", '5432')
+    }
+}
+
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
@@ -104,16 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": os.environ.get("POSTGRES_HOST"),
-        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
-    }
-}
 
 CORS_ALLOW_ALL_ORIGINS = True
 
