@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 400px;">
+    <h2 class="mt-5 mb-4">Вход в HR-систему</h2>
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            Неверный логин или пароль, попробуйте ещё раз.
+        </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_username" class="form-label">Логин</label>
+            {{ form.username }}
+        </div>
+        <div class="mb-3">
+            <label for="id_password" class="form-label">Пароль</label>
+            {{ form.password }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Войти</button>
+    </form>
+</div>
+{% endblock %}
